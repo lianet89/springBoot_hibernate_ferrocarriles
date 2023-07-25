@@ -3,18 +3,24 @@ package com.example.springBoot_hibernate_ferrocarriles.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="Itinerario")
 public class Itinerario {
-	@Id
-	@GeneratedValue
+	@Id	
 	private int numeroIdentificacion;
     private int cantidadKilometros;
     private int cantidadVagones;
     private String provinciaOrigen;
     private String provinciaDestino;
 
-    public Itinerario(int numeroIdentificacion, int cantidadKilometros, int cantidadVagones, String provinciaOrigen, String provinciaDestino) {
+      
+    public Itinerario() {
+		super();
+	}
+
+	public Itinerario(int numeroIdentificacion, int cantidadKilometros, int cantidadVagones, String provinciaOrigen, String provinciaDestino) {
         this.numeroIdentificacion = numeroIdentificacion;
         this.cantidadKilometros = cantidadKilometros;
         this.cantidadVagones = cantidadVagones;
@@ -61,6 +67,8 @@ public class Itinerario {
     public void setProvinciaDestino(String provinciaDestino) {
         this.provinciaDestino = provinciaDestino;
     }
+    
+    
 
 
 }
