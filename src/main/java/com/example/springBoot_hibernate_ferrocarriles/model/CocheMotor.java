@@ -28,15 +28,13 @@ public class CocheMotor extends EquipoDeTraccion{
     }
 
     @Override
-    public int cantidadMaxCoches() {
-        int i=0;
+    public int cantidadMaxCoches() {        
         if (potenciaMotor<4000){
-            i=1;
+            return 1;
         } else if (potenciaMotor>=4000) {
-            i=2;
+            return 2;
         }
-        return i;
+        return 0;
     }
-
 
 }

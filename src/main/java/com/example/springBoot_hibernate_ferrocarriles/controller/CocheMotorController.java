@@ -18,36 +18,31 @@ import com.example.springBoot_hibernate_ferrocarriles.service.CocheMotorService;
 public class CocheMotorController {
 	@Autowired
 	CocheMotorService cocheMotorService;
-
-	public CocheMotorController() {
-		super();
-	}
 	
-	@GetMapping("/cocheMotor")
-    private List<CocheMotor> getAllItinerarios(){
+	@GetMapping("/coches-motor")
+    private List<CocheMotor> getAllCocheSMotor(){
     	return cocheMotorService.getAllCocheMotor();
     }
     
-    @GetMapping("/cocheMotor/{cocheMotorId}")
-    private CocheMotor getCocheMotorById(@PathVariable("cocheMotorId")Long cocheMotorId) {
-    	return cocheMotorService.getCocheMotorById(cocheMotorId);
+    @GetMapping("/coches-motor/{id}")
+    private CocheMotor getCocheMotorById(@PathVariable("id")Long id) {
+    	return cocheMotorService.getCocheMotorById(id);
     }    
         
-    @PostMapping("/cocheMotor")
+    @PostMapping("/coches-motor")
     private int addCocheMotor(@RequestBody CocheMotor cocheMotor) {
     	cocheMotorService.addOrUpdateCocheMotor(cocheMotor);
     	return cocheMotor.getNumeroIdentificacion();
     }
     
-    @PutMapping("/cocheMotor")
+    @PutMapping("/coches-motor")
     private CocheMotor updateCocheMotor(@RequestBody CocheMotor cocheMotor) {
-    	cocheMotorService.addOrUpdateCocheMotor(cocheMotor);
-    	return cocheMotor;
+    	return cocheMotorService.addOrUpdateCocheMotor(cocheMotor);
     }
 	
-    @DeleteMapping("/cocheMotor/{cocheMotorId}")
-    private void deleteCocheMotor(@PathVariable("cocheMotorId")Long cocheMotorId) {
-    	cocheMotorService.deleteCocheMotor(cocheMotorId);
+    @DeleteMapping("/coches-motor/{id}")
+    private void deleteCocheMotor(@PathVariable("id")Long id) {
+    	cocheMotorService.deleteCocheMotor(id);
     }
 	
 

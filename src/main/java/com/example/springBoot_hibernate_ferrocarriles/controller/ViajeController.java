@@ -11,12 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springBoot_hibernate_ferrocarriles.service.ViajeService;
 import com.example.springBoot_hibernate_ferrocarriles.service.EquipoDeTraccionService;
-import com.example.springBoot_hibernate_ferrocarriles.model.EquipoDeTraccion;
 import com.example.springBoot_hibernate_ferrocarriles.model.Itinerario;
 import com.example.springBoot_hibernate_ferrocarriles.model.Viaje;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -26,61 +23,29 @@ public class ViajeController {
 	@Autowired
 	EquipoDeTraccionService equipoDeTraccionService;
 
-	public ViajeController() {
-		super();
-	}
-	
-	@GetMapping("/viaje")
-	public List<Viaje> getAllViajes(){
+	@GetMapping("/travels")
+	public List<Viaje> getAllTravels(){
 		return viajeService.getAllViajes();
 	}
 	
-	@GetMapping("/viaje/{idViaje}")
-	public Viaje getViajeById(@PathVariable("idViaje")Long idViaje){
-		return viajeService.getViajeById(idViaje);
+	@GetMapping("/travels/{id}")
+	public Viaje getTravelById(@PathVariable("id")Long id){
+		return viajeService.getViajeById(id);
 	}
 	
-	@PostMapping("/viaje")
-	public Viaje addViaje(@RequestBody Itinerario itinerario){		
-		int numeroViaje = viajeService.getAllViajes().size()+1;
-		boolean equipoDisponible =false;
-		List<EquipoDeTraccion> linea = equipoDeTraccionService.getAllEquipoDeTraccion();
-		Viaje nuevoViaje = new Viaje();
-        
-        Comparator<EquipoDeTraccion> porKilometraje = Comparator.comparing(EquipoDeTraccion::getKilometrajeRecorrido);
-        Collections.sort(linea, porKilometraje);
-        
-        for (EquipoDeTraccion equipo:linea) {
-            if (equipo.cantidadMaxCoches()>=itinerario.getCantidadVagones() && equipo.getLineaDeTrenes()==1){
-                equipoDisponible = true;
-                nuevoViaje = new Viaje(numeroViaje, itinerario, equipo);
-                viajeService.addOrUpdateViaje(nuevoViaje);
-                equipo.setLineaDeTrenes(2);
-                equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipo);
-                break;
-            }
-        }
-        if (equipoDisponible ==false){
-            System.out.println("No existen equipos disponibles para el itinerario nÃºmero "+ itinerario.getNumeroIdentificacion()+".");
-        }		
-		return nuevoViaje;
+	@PostMapping("/travels")
+	public Viaje addTravel(@RequestBody Itinerario itinerario){	
+		return viajeService.addViaje(itinerario);
 	}	
 	
-	@PutMapping("/viaje")
-	public int updateViaje(@RequestBody Viaje viaje){		
-		viajeService.addOrUpdateViaje(viaje);		
-		return viaje.getNumeroViaje();		
+	@PutMapping("/travels")
+	public Viaje updateTravel(@RequestBody Viaje viaje){		
+		return viajeService.addOrUpdateViaje(viaje);	
 	}
 	
-	@DeleteMapping("/viaje/{idViaje}")
-	public void deleteViaje(@PathVariable("idViaje") Long idViaje){
-		Viaje viaje = viajeService.getViajeById(idViaje);
-		EquipoDeTraccion equipo = viaje.getEquipoDeTraccion();
-		int kilometrajeActual = equipo.getKilometrajeRecorrido() + viaje.getItinerario().getCantidadKilometros();
-		viajeService.deleteViaje(idViaje);
-		equipo.setKilometrajeRecorrido(kilometrajeActual);
-		equipo.setLineaDeTrenes(1);
-		equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipo);
+	@DeleteMapping("/travels/{id}")
+	public void deleteTravel(@PathVariable("id") Long id){
+		viajeService.deleteViaje(id);
 	}
 
 }

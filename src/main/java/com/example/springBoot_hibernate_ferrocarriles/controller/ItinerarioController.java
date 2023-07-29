@@ -20,35 +20,29 @@ public class ItinerarioController {
     @Autowired
     ItinerarioService itinerarioService;   
        
-    public ItinerarioController() {
-		super();
-	}
-
-	@GetMapping("/itinerario")
+    @GetMapping("/itinerarios")
     private List<Itinerario> getAllItinerarios(){
     	return itinerarioService.getAllItinerarios();
     }
     
-    @GetMapping("/itinerario/{itinerarioId}")
-    private Itinerario getItinerarioById(@PathVariable("itinerarioId")Long itinerarioId) {
-    	return itinerarioService.getItinerarioById(itinerarioId);
+    @GetMapping("/itinerarios/{id}")
+    private Itinerario getItinerarioById(@PathVariable("id")Long id) {
+    	return itinerarioService.getItinerarioById(id);
     }   
         
-    @PostMapping("/itinerario")
-    private int addItinerario(@RequestBody Itinerario itinerario) {
-    	itinerarioService.addOrUpdateItinerario(itinerario);
-    	return itinerario.getNumeroIdentificacion();
+    @PostMapping("/itinerarios")
+    private Itinerario addItinerario(@RequestBody Itinerario itinerario) {
+    	return itinerarioService.addOrUpdateItinerario(itinerario);    	
     }
     
-    @PutMapping("/itinerario")
+    @PutMapping("/itinerarios")
     private Itinerario updateItinerario(@RequestBody Itinerario itinerario) {
-    	itinerarioService.addOrUpdateItinerario(itinerario);
-    	return itinerario;
+    	return itinerarioService.addOrUpdateItinerario(itinerario);
     }
     
-    @DeleteMapping("/itinerario/{itinerarioId}")
-    private void deleteItinerario(@PathVariable("itinerarioId")Long itinerarioId) {
-    	itinerarioService.deleteItinerario(itinerarioId);
+    @DeleteMapping("/itinerarios/{id}")
+    private void deleteItinerario(@PathVariable("id")Long id) {
+    	itinerarioService.deleteItinerario(id);
     }
     
 }

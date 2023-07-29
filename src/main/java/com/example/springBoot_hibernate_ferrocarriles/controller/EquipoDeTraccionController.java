@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springBoot_hibernate_ferrocarriles.service.EquipoDeTraccionService;
-import com.example.springBoot_hibernate_ferrocarriles.service.ViajeService;
 import com.example.springBoot_hibernate_ferrocarriles.model.EquipoDeTraccion;
-import com.example.springBoot_hibernate_ferrocarriles.model.Viaje;
+
 
 import java.util.List;
 
@@ -20,36 +19,30 @@ import java.util.List;
 public class EquipoDeTraccionController {
 	@Autowired
 	EquipoDeTraccionService equipoDeTraccionService;
-
-	public EquipoDeTraccionController() {
-		super();
-	}
 	
-	@GetMapping("/equipoDeTraccion")
+	@GetMapping("/equipos-de-traccion")
 	public List<EquipoDeTraccion> getAllEquipoDeTraccion(){
 		return equipoDeTraccionService.getAllEquipoDeTraccion();
 	}
 	
-	@GetMapping("/equipoDeTraccion/{idEquipoDeTraccion}")
-	public EquipoDeTraccion getEquipoDeTraccionById(@PathVariable("idEquipoDeTraccion")Long idEquipoDeTraccion){
-		return equipoDeTraccionService.getEquipoDeTraccionById(idEquipoDeTraccion);
+	@GetMapping("/equipos-de-traccion/{id}")
+	public EquipoDeTraccion getEquipoDeTraccionById(@PathVariable("id")Long id){
+		return equipoDeTraccionService.getEquipoDeTraccionById(id);
 	}
 	
-	@PostMapping("/equipoDeTraccion")
-	public int addEquipoDeTraccion(@RequestBody EquipoDeTraccion equipoDeTraccion){
-		equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipoDeTraccion);
-		return equipoDeTraccion.getNumeroIdentificacion();
+	@PostMapping("/equipos-de-traccion")
+	public EquipoDeTraccion addEquipoDeTraccion(@RequestBody EquipoDeTraccion equipoDeTraccion){
+		return equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipoDeTraccion);
 	}
 	
-	@PutMapping("/equipoDeTraccion")
+	@PutMapping("/equipos-de-traccion")
 	public EquipoDeTraccion updateEquipoDeTraccion(@RequestBody EquipoDeTraccion equipoDeTraccion){
-		equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipoDeTraccion);
-		return equipoDeTraccion;		
+		return equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipoDeTraccion);	
 	}
 	
-	@DeleteMapping("/equipoDeTraccion/{idEquipoDeTraccion}")
-	public void deleteEquipoDeTraccion(@PathVariable("idEquipoDeTraccion") Long idEquipoDeTraccion){
-		equipoDeTraccionService.deleteEquipoDeTraccion(idEquipoDeTraccion);
+	@DeleteMapping("/equipos-de-traccion/{id}")
+	public void deleteEquipoDeTraccion(@PathVariable("id") Long id){
+		equipoDeTraccionService.deleteEquipoDeTraccion(id);
 	}
 
 }

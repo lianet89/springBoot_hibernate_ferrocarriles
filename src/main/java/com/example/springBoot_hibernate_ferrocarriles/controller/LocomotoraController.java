@@ -18,36 +18,30 @@ import com.example.springBoot_hibernate_ferrocarriles.service.LocomotoraService;
 public class LocomotoraController {
 	@Autowired
 	LocomotoraService locomotoraService;
-
-	public LocomotoraController() {
-		super();
-	}
 	
-	@GetMapping("/locomotora")
-	public List<Locomotora> getAllLocomotora(){
+	@GetMapping("/locomotoras")
+	public List<Locomotora> getAllLocomotoras(){
 		return locomotoraService.getAllLocomotora();
 	}
 	
-	@GetMapping("/locomotora/{locomotoraId}")
-	public Locomotora getLocomotoraById(@PathVariable("locomotoraId")Long locomotoraId) {
-		return locomotoraService.getLocomotoraById(locomotoraId);
+	@GetMapping("/locomotoras/{id}")
+	public Locomotora getLocomotoraById(@PathVariable("id") Long id) {
+		return locomotoraService.getLocomotoraById(id);
 	}
 	
-	@PostMapping("/locomotora")
-	public int addLocomotora(@RequestBody Locomotora locomotora){
-		locomotoraService.addOrUpdateLocomotora(locomotora);
-		return locomotora.getNumeroIdentificacion();		
+	@PostMapping("/locomotoras")
+	public Locomotora addLocomotora(@RequestBody Locomotora locomotora){
+		return locomotoraService.addOrUpdateLocomotora(locomotora);
 	}
 	
-	@PutMapping("/locomotora")
+	@PutMapping("/locomotoras")
 	public Locomotora updateLocomotora(@RequestBody Locomotora locomotora){
-		locomotoraService.addOrUpdateLocomotora(locomotora);
-		return locomotora;
+		return locomotoraService.addOrUpdateLocomotora(locomotora);
 	}
 	
-	@DeleteMapping("/locomotora/{locomotoraId}")
-	public void deleteLocomotora(@PathVariable("locomotoraId") Long locomotoraId) {
-		locomotoraService.deleteLocomotora(locomotoraId);
+	@DeleteMapping("/locomotoras/{id}")
+	public void deleteLocomotora(@PathVariable("id") Long id) {
+		locomotoraService.deleteLocomotora(id);
 	}
 
 }

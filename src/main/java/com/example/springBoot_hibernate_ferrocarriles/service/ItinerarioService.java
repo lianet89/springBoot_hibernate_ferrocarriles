@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import com.example.springBoot_hibernate_ferrocarriles.model.Itinerario;
 import com.example.springBoot_hibernate_ferrocarriles.repository.ItinerarioRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ItinerarioService {
 	@Autowired
@@ -25,20 +28,24 @@ public class ItinerarioService {
 	}
 	
 	public List<Itinerario> getAllItinerarios(){
+		log.info("Listing all itineraries.");
 		List<Itinerario> itinerarios=new ArrayList<Itinerario>();
 		itinerarioRepository.findAll().forEach(itinerario1->itinerarios.add(itinerario1));
 		return itinerarios;
 	}
 	
 	public Itinerario getItinerarioById(Long id) {
+		log.info("Obtaining an itinerary by ID:{}", id);
 		return itinerarioRepository.findById(id).get();
 	}
 	
-	public void addOrUpdateItinerario(Itinerario itinerario) {
-		itinerarioRepository.save(itinerario);		
+	public Itinerario addOrUpdateItinerario(Itinerario itinerario) {
+		log.info("Adding an itinerary:{}", itinerario);
+		return itinerarioRepository.save(itinerario);		
 	}
 	
 	public void deleteItinerario(Long id) {
+		log.info("Deleting an itinerary by ID:{}", id);
 		itinerarioRepository.deleteById(id);
 	}
 	
