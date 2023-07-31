@@ -17,18 +17,23 @@ public class ReportesController {
 	private ReportesService reportesService;
 	
 	@GetMapping("/reports/siutable-traction-equipment/{id}")
-	public List<EquipoDeTraccion> siutableTractionEquipment(@PathVariable("id")int id){
+	public List<EquipoDeTraccion> siutableTractionEquipment(@PathVariable("id") int id) throws Exception {
 		return reportesService.equiposAptosParaItinerario(id);
 	}
 	
 	@GetMapping("/reports/locomotives-of-a-brand/{marca}")
-	public List<Locomotora> locomotivesOfABrand(@PathVariable("marca")String marca){
+	public List<Locomotora> locomotivesOfABrand(@PathVariable("marca")String marca) throws Exception{
 		return reportesService.locomotorasDeMarca(marca);
 	}
 	
 	@GetMapping("/reports/origen-with-more-destinations")
-	public String originWithMoreDestinations() {
+	public String originWithMoreDestinations() throws Exception {
 		return reportesService.originMoreDestinations();
+	}
+	
+	@GetMapping("/reports/cover-itinerary/{id}")
+	public String coverItinerary(@PathVariable("id") int id) throws Exception{
+		return reportesService.coverItinerary(id);
 	}
 	
 }
