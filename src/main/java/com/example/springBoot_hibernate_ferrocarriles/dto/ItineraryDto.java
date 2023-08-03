@@ -1,26 +1,28 @@
-package com.example.springBoot_hibernate_ferrocarriles.model;
+package com.example.springBoot_hibernate_ferrocarriles.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 
-@Entity
-@Table(name="Itinerario")
-public class Itinerario {
-	@Id	
+public class ItineraryDto {
+	@NotNull
 	private int numeroIdentificacion;
+	
+	@Positive @NotNull
     private int cantidadKilometros;
+	
+	@Positive @NotNull
     private int cantidadVagones;
+	
+	@NotNull @NotBlank
     private String provinciaOrigen;
+	
+	@NotNull @NotBlank
     private String provinciaDestino;
 
-      
-    public Itinerario() {
+    public ItineraryDto() {
 		super();
 	}
 
-	public Itinerario(int numeroIdentificacion, int cantidadKilometros, int cantidadVagones, String provinciaOrigen, String provinciaDestino) {
+	public ItineraryDto(int numeroIdentificacion, int cantidadKilometros, int cantidadVagones, String provinciaOrigen, String provinciaDestino) {
         this.numeroIdentificacion = numeroIdentificacion;
         this.cantidadKilometros = cantidadKilometros;
         this.cantidadVagones = cantidadVagones;
@@ -66,6 +68,6 @@ public class Itinerario {
 
     public void setProvinciaDestino(String provinciaDestino) {
         this.provinciaDestino = provinciaDestino;
-    }   
+    }
 
 }

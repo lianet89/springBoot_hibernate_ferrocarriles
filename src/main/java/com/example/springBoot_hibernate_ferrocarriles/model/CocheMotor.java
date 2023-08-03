@@ -14,12 +14,12 @@ public class CocheMotor extends EquipoDeTraccion{
 		super();
 	}
 
-	public CocheMotor(int numeroIdentificacion, int kilometrajeRecorrido, int potenciaMotor, int lineaDeTrenes, boolean climatizado) {
-        super(numeroIdentificacion, kilometrajeRecorrido, potenciaMotor, lineaDeTrenes);
-        this.climatizado = climatizado;
-    }
-
-    public boolean isClimatizado() {
+    public CocheMotor(boolean climatizado) {
+		super();
+		this.climatizado = climatizado;
+	}
+    
+	public boolean isClimatizado() {
         return climatizado;
     }
 
@@ -36,5 +36,5 @@ public class CocheMotor extends EquipoDeTraccion{
         }
         return 0;
     }
-
+    
 }

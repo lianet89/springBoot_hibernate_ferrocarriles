@@ -27,26 +27,43 @@ public class CocheMotorService {
 		this.cocheMotorRepository = cocheMotorRepositoy;
 	}
 	
-	public List<CocheMotor> getAllCocheMotor(){
+	public List<CocheMotor> getAllCocheMotor() throws Exception {
 		log.info("Listing all motor-car.");
-		List<CocheMotor> cochesMotor=new ArrayList<CocheMotor>();
-		cocheMotorRepository.findAll().forEach(cocheMotor1->cochesMotor.add(cocheMotor1));
-		return cochesMotor;
+		List<CocheMotor> cochesMotor=new ArrayList<CocheMotor>();		
+		try {
+			cocheMotorRepository.findAll().forEach(cocheMotor1->cochesMotor.add(cocheMotor1));
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return cochesMotor;
 	}
 	
-	public CocheMotor getCocheMotorById(Long id) {
+	public CocheMotor getCocheMotorById(Long id) throws Exception{
 		log.info("Obtainig a motor-car by ID:{}", id);
-		return cocheMotorRepository.findById(id).get();
+		CocheMotor cocheMotor = new CocheMotor();
+		try {
+			cocheMotor = cocheMotorRepository.findById(id).get();
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return cocheMotor;
 	}
 	
-	public CocheMotor addOrUpdateCocheMotor(CocheMotor cocheMotor) {
+	public CocheMotor addOrUpdateCocheMotor(CocheMotor cocheMotor) throws Exception {
 		log.info("Adding a motor-car:{}", cocheMotor);
-		return cocheMotorRepository.save(cocheMotor);		
+		CocheMotor cocheSalvado = new CocheMotor();
+		try {
+			cocheSalvado = cocheMotorRepository.save(cocheMotor);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return cocheSalvado;
 	}
 	
-	public void deleteCocheMotor(Long id) {
+	public void deleteCocheMotor(Long id) throws Exception {
 		log.info("Deleting a motor-car by ID:{}", id);
+		try {
 		cocheMotorRepository.deleteById(id);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		}
 	}
 	
 

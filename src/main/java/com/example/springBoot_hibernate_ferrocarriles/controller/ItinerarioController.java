@@ -1,7 +1,9 @@
 package com.example.springBoot_hibernate_ferrocarriles.controller;
 
-
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springBoot_hibernate_ferrocarriles.dto.ItineraryDto;
 import com.example.springBoot_hibernate_ferrocarriles.model.Itinerario;
 import com.example.springBoot_hibernate_ferrocarriles.service.ItinerarioService;
 
@@ -19,29 +22,38 @@ import com.example.springBoot_hibernate_ferrocarriles.service.ItinerarioService;
 public class ItinerarioController {	   
     @Autowired
     ItinerarioService itinerarioService;   
+    
+    @Autowired
+	ModelMapper modelMapper;
        
-    @GetMapping("/itinerarios")
-    private List<Itinerario> getAllItinerarios(){
-    	return itinerarioService.getAllItinerarios();
+    @GetMapping("/itineraries")
+    private List<ItineraryDto> getAllItinerarios() throws Exception {
+    	return itinerarioService.getAllItinerarios().stream().map(itineraties -> modelMapper.map(itineraties, ItineraryDto.class)).collect(Collectors.toList());
     }
     
-    @GetMapping("/itinerarios/{id}")
-    private Itinerario getItinerarioById(@PathVariable("id")Long id) {
-    	return itinerarioService.getItinerarioById(id);
+    @GetMapping("/itineraries/{id}")
+    private ItineraryDto getItinerarioById(@PathVariable("id")Long id) throws Exception {
+    	return modelMapper.map(itinerarioService.getItinerarioById(id), ItineraryDto.class);
     }   
         
-    @PostMapping("/itinerarios")
-    private Itinerario addItinerario(@RequestBody Itinerario itinerario) {
-    	return itinerarioService.addOrUpdateItinerario(itinerario);    	
+    @PostMapping("/itineraries")
+    private ItineraryDto addItinerario(@RequestBody ItineraryDto itineraryDto) throws Exception {
+    	Itinerario itineraryRequest = modelMapper.map(itineraryDto, Itinerario.class);
+    	Itinerario itinerary = itinerarioService.addOrUpdateItinerario(itineraryRequest);
+    	ItineraryDto itineraryResponse = modelMapper.map(itinerary, ItineraryDto.class);
+    	return itineraryResponse; 	
     }
     
-    @PutMapping("/itinerarios")
-    private Itinerario updateItinerario(@RequestBody Itinerario itinerario) {
-    	return itinerarioService.addOrUpdateItinerario(itinerario);
+    @PutMapping("/itineraries")
+    private ItineraryDto updateItinerario(@RequestBody ItineraryDto itineraryDto) throws Exception {
+    	Itinerario itineraryRequest = modelMapper.map(itineraryDto, Itinerario.class);
+    	Itinerario itinerary = itinerarioService.addOrUpdateItinerario(itineraryRequest);
+    	ItineraryDto itineraryResponse = modelMapper.map(itinerary, ItineraryDto.class);
+    	return itineraryResponse;
     }
     
-    @DeleteMapping("/itinerarios/{id}")
-    private void deleteItinerario(@PathVariable("id")Long id) {
+    @DeleteMapping("/itineraries/{id}")
+    private void deleteItinerario(@PathVariable("id")Long id) throws Exception {
     	itinerarioService.deleteItinerario(id);
     }
     

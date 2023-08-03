@@ -27,26 +27,44 @@ public class ItinerarioService {
 		this.itinerarioRepository = itinerarioRepository;
 	}
 	
-	public List<Itinerario> getAllItinerarios(){
+	public List<Itinerario> getAllItinerarios() throws Exception {
 		log.info("Listing all itineraries.");
 		List<Itinerario> itinerarios=new ArrayList<Itinerario>();
+		try {
 		itinerarioRepository.findAll().forEach(itinerario1->itinerarios.add(itinerario1));
-		return itinerarios;
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return itinerarios;
+		
 	}
 	
-	public Itinerario getItinerarioById(Long id) {
+	public Itinerario getItinerarioById(Long id) throws Exception {
 		log.info("Obtaining an itinerary by ID:{}", id);
-		return itinerarioRepository.findById(id).get();
+		Itinerario itinerario = new Itinerario();
+		try {
+			itinerario = itinerarioRepository.findById(id).get();
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return itinerario;
 	}
 	
-	public Itinerario addOrUpdateItinerario(Itinerario itinerario) {
+	public Itinerario addOrUpdateItinerario(Itinerario itinerario) throws Exception {
 		log.info("Adding an itinerary:{}", itinerario);
-		return itinerarioRepository.save(itinerario);		
+		Itinerario itinerarioSalvado = new Itinerario();
+		try {
+			itinerarioSalvado = itinerarioRepository.save(itinerario);	
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return itinerarioSalvado;
 	}
 	
-	public void deleteItinerario(Long id) {
+	public void deleteItinerario(Long id) throws Exception {
 		log.info("Deleting an itinerary by ID:{}", id);
-		itinerarioRepository.deleteById(id);
+		try {
+			itinerarioRepository.deleteById(id);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} 
 	}
 	
 }

@@ -115,66 +115,62 @@ public class ReportesService {
 		return origenGanador;
 	}
 	
-	/*Obtengo el itinerario a eliminar dado su id (itineraryToDelete) y la lista de itinerarios (itineraryList).
-	 * Si la lista esta vacia muestro un mensaje "No existen itinerarios". Sino, recorro itineraryList de inicio a fin (i) para comparar 
-	 * por la ProvinciaOrigen con el itinerario a eliminar.
-	 * Si tienen diferentes ID y el mismo origen, guardo en la variable "temporalItinerary" el itinerario de la posicion i.
-	 * Si el itinerario de la posicion i y el itinerario a eliminar tienen el mismo origen y mismo destino, guardo en la variable combination 
-	 * el origen y destino de ese itinerario y finalizo el ciclo.
-	 * Sino, recorro itineraryList del final al inicio (j) para comparar con el itinerario de la posicion i y con el "itineraryToDelete".
-	 * Si el itinerario de la posicion j e itineraryToDelete tienen el mismo origen y mismo destino, guardo en la variable combination 
-	 * el origen y destino de ese itinerario y finalizo el ciclo.
-	 * Sino, si el destino del itinerario de la posicion i coincide con el origen del itinerario de la posicion j, y el destino
-	 * del itinerario en la posicion j coincide con el destino del itinerario a eliminar, guardo en la variable combination 
-	 * el origen y destino de los itinerarios de las posiciones i y j y finalizo el ciclo.
-	 * Retorno la variable combination.
-	 * */
-	//el siguiente metodo esta PENDIENTE DE SER DIVIDIDO en metodos mas pequennos...	
-	public String coverItinerary(int id) throws Exception {
-		log.info("Obtaining the combination of itineraries that can cover the itinerary:{}", id);
+	public String findCombination(Itinerario temporalItinerary, List<Itinerario> itineraryList, Itinerario itineraryToDelete, int id) {
+		String combination = "";
+		for(int i = 0; i<itineraryList.size(); i++) {
+			temporalItinerary = itineraryList.get(i);
+			if(temporalItinerary.getNumeroIdentificacion() != id &&
+					itineraryToDelete.getProvinciaOrigen().equals(temporalItinerary.getProvinciaOrigen()) &&
+					itineraryToDelete.getProvinciaDestino().equals(temporalItinerary.getProvinciaDestino())){
+				combination = temporalItinerary.getProvinciaOrigen() + " - " + temporalItinerary.getProvinciaDestino() + 
+						" ( " + temporalItinerary.getNumeroIdentificacion() + " ) ";
+				break;
+			}else if(temporalItinerary.getNumeroIdentificacion() != id &&
+						itineraryToDelete.getProvinciaOrigen().equals(temporalItinerary.getProvinciaOrigen())) {
+				combination = combinationOfItineraries(temporalItinerary, itineraryList, itineraryToDelete, id);
+			}
+			if(!combination.isBlank()) {
+				break;		
+			}
+		}
+		return combination;
+	}
+	
+	public String combinationOfItineraries (Itinerario temporalItinerary, List<Itinerario> itineraryList, Itinerario itineraryToDelete, int id) {
+		String combination = "";
+		for(int j = itineraryList.size()-1; j>=0; j--) {
+			if(itineraryList.get(j).getNumeroIdentificacion() != id && 
+						itineraryList.get(j).getProvinciaOrigen().equals(itineraryToDelete.getProvinciaOrigen()) &&
+						itineraryList.get(j).getProvinciaDestino().equals(itineraryToDelete.getProvinciaDestino())) {
+					combination = itineraryList.get(j).getProvinciaOrigen() + " - " + itineraryList.get(j).getProvinciaDestino() + 
+							" ( " + itineraryList.get(j).getNumeroIdentificacion() + " ) ";
+					break;								
+				} else if(itineraryList.get(j).getNumeroIdentificacion() != id && 
+						temporalItinerary.getProvinciaDestino().equals(itineraryList.get(j).getProvinciaOrigen()) &&
+						itineraryList.get(j).getProvinciaDestino().equals(itineraryToDelete.getProvinciaDestino())){
+					combination = temporalItinerary.getProvinciaOrigen() + " - " + temporalItinerary.getProvinciaDestino() + 
+							" , " + itineraryList.get(j).getProvinciaOrigen() + " - " + itineraryList.get(j).getProvinciaDestino() + 
+							" ( " + temporalItinerary.getNumeroIdentificacion() + " - " + itineraryList.get(j).getNumeroIdentificacion() + 
+							" ) ";
+					break;								
+				}
+			}
+		return combination;
+	}
 		
+	public String coverItinerary(int id) throws Exception {
+		log.info("Obtaining the combination of itineraries that can cover the itinerary:{}", id);		
 		Itinerario temporalItinerary = new Itinerario();
 		String combination = "";
 		
 		try {
 			Itinerario itineraryToDelete = itinerarioService.getItinerarioById((long) id);
 			List<Itinerario> itineraryList = itinerarioService.getAllItinerarios();
-						
+			
 			if(itineraryList.isEmpty()) {
 				return "No existen itinerarios.";
 			} else {
-				for(int i = 0; i<itineraryList.size(); i++) {
-					temporalItinerary = itineraryList.get(i);
-					if(temporalItinerary.getNumeroIdentificacion() != id &&
-							itineraryToDelete.getProvinciaOrigen().equals(temporalItinerary.getProvinciaOrigen()) &&
-							itineraryToDelete.getProvinciaDestino().equals(temporalItinerary.getProvinciaDestino())){
-						combination = temporalItinerary.getProvinciaOrigen() + " - " + temporalItinerary.getProvinciaDestino() + 
-								" ( " + temporalItinerary.getNumeroIdentificacion() + " ) ";
-						break;
-					}else if(temporalItinerary.getNumeroIdentificacion() != id &&
-								itineraryToDelete.getProvinciaOrigen().equals(temporalItinerary.getProvinciaOrigen())) {
-						for(int j = itineraryList.size()-1; j>=0; j--) {
-							if(itineraryList.get(j).getNumeroIdentificacion() != id && 
-										itineraryList.get(j).getProvinciaOrigen().equals(itineraryToDelete.getProvinciaOrigen()) &&
-										itineraryList.get(j).getProvinciaDestino().equals(itineraryToDelete.getProvinciaDestino())) {
-									combination = itineraryList.get(j).getProvinciaOrigen() + " - " + itineraryList.get(j).getProvinciaDestino() + 
-											" ( " + itineraryList.get(j).getNumeroIdentificacion() + " ) ";
-									break;								
-								} else if(itineraryList.get(j).getNumeroIdentificacion() != id && 
-										temporalItinerary.getProvinciaDestino().equals(itineraryList.get(j).getProvinciaOrigen()) &&
-										itineraryList.get(j).getProvinciaDestino().equals(itineraryToDelete.getProvinciaDestino())){
-									combination = temporalItinerary.getProvinciaOrigen() + " - " + temporalItinerary.getProvinciaDestino() + 
-											" , " + itineraryList.get(j).getProvinciaOrigen() + " - " + itineraryList.get(j).getProvinciaDestino() + 
-											" ( " + temporalItinerary.getNumeroIdentificacion() + " - " + itineraryList.get(j).getNumeroIdentificacion() + 
-											" ) ";
-									break;								
-								}
-							}
-					}
-					if(!combination.isBlank()) {
-						break;		
-					}
-				}
+				combination = findCombination(temporalItinerary, itineraryList, itineraryToDelete, id);
 				if(combination.isBlank()) {
 					return "No";
 				}else

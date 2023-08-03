@@ -1,6 +1,9 @@
 package com.example.springBoot_hibernate_ferrocarriles.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,36 +14,50 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springBoot_hibernate_ferrocarriles.dto.LocomotiveDto;
 import com.example.springBoot_hibernate_ferrocarriles.model.Locomotora;
 import com.example.springBoot_hibernate_ferrocarriles.service.LocomotoraService;
+
+import jakarta.validation.Valid;
 
 @RestController
 public class LocomotoraController {
 	@Autowired
 	LocomotoraService locomotoraService;
 	
-	@GetMapping("/locomotoras")
-	public List<Locomotora> getAllLocomotoras(){
-		return locomotoraService.getAllLocomotora();
+	@Autowired
+	ModelMapper modelMapper;
+	
+	@GetMapping("/locomotives")
+	public List<LocomotiveDto> getAllLocomotoras() throws Exception {
+		return locomotoraService.getAllLocomotora().stream().map(locomotive -> modelMapper.map(locomotive, LocomotiveDto.class)).collect(Collectors.toList());
 	}
 	
-	@GetMapping("/locomotoras/{id}")
-	public Locomotora getLocomotoraById(@PathVariable("id") Long id) {
-		return locomotoraService.getLocomotoraById(id);
+	@GetMapping("/locomotives/{id}")
+	public LocomotiveDto getLocomotoraById(@PathVariable("id") Long id) throws Exception {
+		Locomotora locomotive = locomotoraService.getLocomotoraById(id);
+		LocomotiveDto locomotiveResponse = modelMapper.map(locomotive, LocomotiveDto.class); 
+		return locomotiveResponse;
 	}
 	
-	@PostMapping("/locomotoras")
-	public Locomotora addLocomotora(@RequestBody Locomotora locomotora){
-		return locomotoraService.addOrUpdateLocomotora(locomotora);
+	@PostMapping("/locomotives")
+	public LocomotiveDto addLocomotora(@Valid @RequestBody LocomotiveDto locomotiveDto) throws Exception {
+		Locomotora locomotiveRequest = modelMapper.map(locomotiveDto, Locomotora.class);
+		Locomotora locomotive = locomotoraService.addOrUpdateLocomotora(locomotiveRequest);
+		LocomotiveDto locomotiveResponse = modelMapper.map(locomotive, LocomotiveDto.class);
+    	return locomotiveResponse;
 	}
 	
-	@PutMapping("/locomotoras")
-	public Locomotora updateLocomotora(@RequestBody Locomotora locomotora){
-		return locomotoraService.addOrUpdateLocomotora(locomotora);
+	@PutMapping("/locomotives")
+	public LocomotiveDto updateLocomotora(@RequestBody LocomotiveDto locomotiveDto) throws Exception {
+		Locomotora locomotiveRequest = modelMapper.map(locomotiveDto, Locomotora.class);
+		Locomotora locomotive = locomotoraService.addOrUpdateLocomotora(locomotiveRequest);
+		LocomotiveDto locomotiveResponse = modelMapper.map(locomotive, LocomotiveDto.class);
+    	return locomotiveResponse;
 	}
 	
-	@DeleteMapping("/locomotoras/{id}")
-	public void deleteLocomotora(@PathVariable("id") Long id) {
+	@DeleteMapping("/locomotives/{id}")
+	public void deleteLocomotora(@PathVariable("id") Long id) throws Exception {
 		locomotoraService.deleteLocomotora(id);
 	}
 

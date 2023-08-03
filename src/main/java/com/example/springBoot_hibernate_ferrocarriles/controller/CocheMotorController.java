@@ -1,6 +1,9 @@
 package com.example.springBoot_hibernate_ferrocarriles.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,37 +14,48 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springBoot_hibernate_ferrocarriles.dto.MotorCarDto;
 import com.example.springBoot_hibernate_ferrocarriles.model.CocheMotor;
 import com.example.springBoot_hibernate_ferrocarriles.service.CocheMotorService;
+
+import jakarta.validation.Valid;
 
 @RestController
 public class CocheMotorController {
 	@Autowired
 	CocheMotorService cocheMotorService;
 	
-	@GetMapping("/coches-motor")
-    private List<CocheMotor> getAllCocheSMotor(){
-    	return cocheMotorService.getAllCocheMotor();
+	@Autowired
+	ModelMapper modelMapper;
+	
+	@GetMapping("/motor-cars")
+    private List<MotorCarDto> getAllCocheSMotor() throws Exception {
+    	return cocheMotorService.getAllCocheMotor().stream().map(motorCar -> modelMapper.map(motorCar, MotorCarDto.class)).collect(Collectors.toList());
     }
     
-    @GetMapping("/coches-motor/{id}")
-    private CocheMotor getCocheMotorById(@PathVariable("id")Long id) {
-    	return cocheMotorService.getCocheMotorById(id);
+    @GetMapping("/motor-cars/{id}")
+    private MotorCarDto getCocheMotorById(@PathVariable("id")Long id) throws Exception {
+    	return modelMapper.map(cocheMotorService.getCocheMotorById(id), MotorCarDto.class);
     }    
         
-    @PostMapping("/coches-motor")
-    private int addCocheMotor(@RequestBody CocheMotor cocheMotor) {
-    	cocheMotorService.addOrUpdateCocheMotor(cocheMotor);
-    	return cocheMotor.getNumeroIdentificacion();
+    @PostMapping("/motor-cars")
+    private MotorCarDto addCocheMotor(@Valid @RequestBody MotorCarDto motorCarDto) throws Exception {
+    	CocheMotor motorCarRequest = modelMapper.map(motorCarDto, CocheMotor.class);
+    	CocheMotor motorCar = cocheMotorService.addOrUpdateCocheMotor(motorCarRequest);
+    	MotorCarDto motorCarResponse = modelMapper.map(motorCar, MotorCarDto.class);
+    	return motorCarResponse;
     }
     
-    @PutMapping("/coches-motor")
-    private CocheMotor updateCocheMotor(@RequestBody CocheMotor cocheMotor) {
-    	return cocheMotorService.addOrUpdateCocheMotor(cocheMotor);
+    @PutMapping("/motor-cars")
+    private MotorCarDto updateCocheMotor(@RequestBody MotorCarDto motorCarDto) throws Exception {
+    	CocheMotor motorCarRequest = modelMapper.map(motorCarDto, CocheMotor.class);
+    	CocheMotor motorCar = cocheMotorService.addOrUpdateCocheMotor(motorCarRequest);
+    	MotorCarDto motorCarResponse = modelMapper.map(motorCar, MotorCarDto.class);
+    	return motorCarResponse;
     }
 	
-    @DeleteMapping("/coches-motor/{id}")
-    private void deleteCocheMotor(@PathVariable("id")Long id) {
+    @DeleteMapping("/motor-cars/{id}")
+    private void deleteCocheMotor(@PathVariable("id")Long id) throws Exception {
     	cocheMotorService.deleteCocheMotor(id);
     }
 	

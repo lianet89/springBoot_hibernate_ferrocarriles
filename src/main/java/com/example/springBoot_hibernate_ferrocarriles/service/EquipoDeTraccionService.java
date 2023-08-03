@@ -27,26 +27,33 @@ public class EquipoDeTraccionService {
 		this.equipoDeTraccionRepository = equipoDeTraccionRepository;
 	}
 	
-	public List<EquipoDeTraccion> getAllEquipoDeTraccion(){
+	public List<EquipoDeTraccion> getAllEquipoDeTraccion() throws Exception {
 		log.info("Listing all traction equipment.");
 		List<EquipoDeTraccion> equiposDeTraccion = new ArrayList<EquipoDeTraccion>();
-		equipoDeTraccionRepository.findAll().forEach(equipoDeTraccion1->equiposDeTraccion.add(equipoDeTraccion1));
-		return equiposDeTraccion;		
+		try {
+			equipoDeTraccionRepository.findAll().forEach(equipoDeTraccion1->equiposDeTraccion.add(equipoDeTraccion1));
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return equiposDeTraccion;		
 	}
 	
-	public EquipoDeTraccion getEquipoDeTraccionById(Long id){
-		log.info("Obtainig a traction equipment by ID:{}", id);
-		return equipoDeTraccionRepository.findById(id).get();		
+	public EquipoDeTraccion getEquipoDeTraccionById(Long id) throws Exception {
+		log.info("Obtainig a traction equipment by ID:{}", id);		
+		return equipoDeTraccionRepository.findById(id).get();				
 	}
 	
-	public EquipoDeTraccion addOrUpdateEquipoDeTraccion(EquipoDeTraccion equipoDeTraccion){
+	public EquipoDeTraccion addOrUpdateEquipoDeTraccion(EquipoDeTraccion equipoDeTraccion) throws Exception {
 		log.info("Adding a traction equipment:{}", equipoDeTraccion);
 		return equipoDeTraccionRepository.save(equipoDeTraccion);
 	}
 	
-	public void deleteEquipoDeTraccion(Long id){
+	public void deleteEquipoDeTraccion(Long id) throws Exception {
 		log.info("Deleting a traction equipment:{}", id);
-		equipoDeTraccionRepository.deleteById(id);
+		try {
+			equipoDeTraccionRepository.deleteById(id);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		}
 	}
 
 }

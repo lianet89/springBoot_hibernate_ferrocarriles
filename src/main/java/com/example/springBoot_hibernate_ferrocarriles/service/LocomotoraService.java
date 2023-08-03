@@ -26,26 +26,43 @@ public class LocomotoraService {
 		this.locomotoraRepository = locomotoraRepository;
 	}
 	
-	public List<Locomotora> getAllLocomotora(){
+	public List<Locomotora> getAllLocomotora() throws Exception {
 		log.info("Listing all locomotives.");
 		List<Locomotora> locomotoras = new ArrayList<Locomotora>();
-		locomotoraRepository.findAll().forEach(locomotora1->locomotoras.add(locomotora1));
+		try {
+			locomotoraRepository.findAll().forEach(locomotora1->locomotoras.add(locomotora1));
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} 
 		return locomotoras;
 	}
 	
-	public Locomotora getLocomotoraById(Long id){
+	public Locomotora getLocomotoraById(Long id) throws Exception {
 		log.info("Obtainig a locomotive by ID:", id);
-		return locomotoraRepository.findById(id).get();		
+		Locomotora locomotora = new Locomotora ();
+		try {
+			locomotora = locomotoraRepository.findById(id).get();	
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return locomotora;
 	}
 	
-	public Locomotora addOrUpdateLocomotora(Locomotora locomotora){
+	public Locomotora addOrUpdateLocomotora(Locomotora locomotora) throws Exception {
 		log.info("Adding a locomotive:{}", locomotora);
-		return locomotoraRepository.save(locomotora);
+		Locomotora locomotoraSalvada = new Locomotora ();
+		try {
+			locomotoraSalvada = locomotoraRepository.save(locomotora);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return locomotoraSalvada;
 	}
 	
-	public void deleteLocomotora(Long id){
+	public void deleteLocomotora(Long id) throws Exception {
 		log.info("Deleting a locomotive:{}", id);
-		locomotoraRepository.deleteById(id);		
+		try {
+			locomotoraRepository.deleteById(id);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		}
 	}
-	
 }
