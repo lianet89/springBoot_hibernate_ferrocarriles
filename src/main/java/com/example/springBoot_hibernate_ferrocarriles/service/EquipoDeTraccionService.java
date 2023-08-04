@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.springBoot_hibernate_ferrocarriles.model.CocheMotor;
 import com.example.springBoot_hibernate_ferrocarriles.model.EquipoDeTraccion;
 import com.example.springBoot_hibernate_ferrocarriles.repository.EquipoDeTraccionRepository;
 
@@ -42,9 +43,19 @@ public class EquipoDeTraccionService {
 		return equipoDeTraccionRepository.findById(id).get();				
 	}
 	
-	public EquipoDeTraccion addOrUpdateEquipoDeTraccion(EquipoDeTraccion equipoDeTraccion) throws Exception {
+	public EquipoDeTraccion addEquipoDeTraccion(EquipoDeTraccion equipoDeTraccion) throws Exception {
 		log.info("Adding a traction equipment:{}", equipoDeTraccion);
 		return equipoDeTraccionRepository.save(equipoDeTraccion);
+	}
+	
+	public EquipoDeTraccion updateEquipoDeTraccion(Long id, EquipoDeTraccion equipoDeTraccion) throws Exception {
+		log.info("Updating a traction equipment:{}", id);
+		EquipoDeTraccion tractionEquipment = equipoDeTraccionRepository.getReferenceById(id);
+		tractionEquipment.setKilometrajeRecorrido(equipoDeTraccion.getKilometrajeRecorrido());
+		tractionEquipment.setLineaDeTrenes(equipoDeTraccion.getLineaDeTrenes());
+		tractionEquipment.setPotenciaMotor(equipoDeTraccion.getPotenciaMotor());						
+		EquipoDeTraccion tractionEquipmentSaved = equipoDeTraccionRepository.save(tractionEquipment);
+		return tractionEquipmentSaved;
 	}
 	
 	public void deleteEquipoDeTraccion(Long id) throws Exception {

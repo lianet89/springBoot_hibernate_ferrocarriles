@@ -71,7 +71,7 @@ public class ViajeService {
 			viajeRepository.deleteById(idViaje);
 			equipo.setKilometrajeRecorrido(kilometrajeActual);
 			equipo.setLineaDeTrenes(1);
-			equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipo);
+			equipoDeTraccionService.updateEquipoDeTraccion((long) equipo.getNumeroIdentificacion(), equipo);
 		} catch(Exception ex) {
 			System.out.println("An error has occurred: " + ex.getMessage());
 		}
@@ -93,7 +93,7 @@ public class ViajeService {
 	                nuevoViaje = new Viaje(numeroViaje, itinerario, equipo);
 	                viajeRepository.save(nuevoViaje);
 	                equipo.setLineaDeTrenes(2);
-	                equipoDeTraccionService.addOrUpdateEquipoDeTraccion(equipo);
+	                equipoDeTraccionService.updateEquipoDeTraccion((long) equipo.getNumeroIdentificacion(), equipo);
 	                break;
 	            }
 	        }

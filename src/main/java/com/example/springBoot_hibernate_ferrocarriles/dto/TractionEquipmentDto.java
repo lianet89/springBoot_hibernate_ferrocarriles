@@ -14,22 +14,22 @@ public class TractionEquipmentDto {
 	@Positive @NotNull
     protected int lineaDeTrenes;
 	
-    private  String marcaFabricante;   
-    private boolean climatizado;
+    //private  String marcaFabricante;   
+    //private boolean climatizado;
 
 	public TractionEquipmentDto() {
 		super();
 	}	
 
 	public TractionEquipmentDto(int numeroIdentificacion, int kilometrajeRecorrido, int potenciaMotor,
-			int lineaDeTrenes, String marcaFabricante, boolean climatizado) {
+			int lineaDeTrenes) {
 		super();
 		this.numeroIdentificacion = numeroIdentificacion;
 		this.kilometrajeRecorrido = kilometrajeRecorrido;
 		this.potenciaMotor = potenciaMotor;
 		this.lineaDeTrenes = lineaDeTrenes;
-		this.marcaFabricante = marcaFabricante;
-		this.climatizado = climatizado;
+		//this.marcaFabricante = marcaFabricante;
+		//this.climatizado = climatizado;
 		}
 
 	public int getNumeroIdentificacion() {
@@ -63,7 +63,7 @@ public class TractionEquipmentDto {
 	public void setLineaDeTrenes(int lineaDeTrenes) {
 		this.lineaDeTrenes = lineaDeTrenes;
 	}
-	
+	/*
 	public String getMarcaFabricante() {
 		return marcaFabricante;
 	}
@@ -79,5 +79,5 @@ public class TractionEquipmentDto {
 	public void setClimatizado(boolean climatizado) {
 		this.climatizado = climatizado;
 	}
-	
+	*/
 }

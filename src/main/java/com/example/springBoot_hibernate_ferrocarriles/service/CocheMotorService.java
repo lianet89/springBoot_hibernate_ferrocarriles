@@ -47,11 +47,26 @@ public class CocheMotorService {
 		} return cocheMotor;
 	}
 	
-	public CocheMotor addOrUpdateCocheMotor(CocheMotor cocheMotor) throws Exception {
+	public CocheMotor addCocheMotor(CocheMotor cocheMotor) throws Exception {
 		log.info("Adding a motor-car:{}", cocheMotor);
 		CocheMotor cocheSalvado = new CocheMotor();
 		try {
 			cocheSalvado = cocheMotorRepository.save(cocheMotor);
+		} catch(Exception ex) {
+			System.out.println("An error has occurred: " + ex.getMessage());
+		} return cocheSalvado;
+	}
+	
+	public CocheMotor updateCocheMotor(Long id, CocheMotor cocheMotor) throws Exception {
+		log.info("Updating a motor-car:{}", id);
+		CocheMotor cocheSalvado = new CocheMotor();
+		try {
+			CocheMotor motorCar = cocheMotorRepository.getReferenceById(id);
+			motorCar.setClimatizado(cocheMotor.isClimatizado());
+			motorCar.setKilometrajeRecorrido(cocheMotor.getKilometrajeRecorrido());
+			motorCar.setLineaDeTrenes(cocheMotor.getLineaDeTrenes());
+			motorCar.setPotenciaMotor(cocheMotor.getPotenciaMotor());						
+			cocheSalvado = cocheMotorRepository.save(motorCar);
 		} catch(Exception ex) {
 			System.out.println("An error has occurred: " + ex.getMessage());
 		} return cocheSalvado;
