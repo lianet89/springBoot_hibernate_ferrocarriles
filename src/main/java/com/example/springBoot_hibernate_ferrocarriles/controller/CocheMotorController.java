@@ -33,14 +33,25 @@ public class CocheMotorController {
 	ModelMapper modelMapper;
 	
 	@GetMapping("/motor-cars")
-    private List<MotorCarDto> getAllCocheSMotor() throws Exception {
-    	return cocheMotorService.getAllCocheMotor().stream().map(motorCar -> modelMapper.map(motorCar, MotorCarDto.class)).collect(Collectors.toList());
+    private ResponseEntity<List<MotorCarDto>> getAllCocheSMotor() throws Exception {
+		List<MotorCarDto> listResponse = cocheMotorService.getAllCocheMotor().stream().map(motorCar -> modelMapper.map(motorCar, MotorCarDto.class)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listResponse);
     }
     
     @GetMapping("/motor-cars/{id}")
     private ResponseEntity<MotorCarDto> getCocheMotorById(@PathVariable("id")Long id) throws Exception {
+<<<<<<< Updated upstream
     	MotorCarDto motorCarResponse = modelMapper.map(cocheMotorService.getCocheMotorById(id), MotorCarDto.class);
     	return ResponseEntity.ok().body(motorCarResponse);
+=======
+    	CocheMotor motorCar = cocheMotorService.getCocheMotorById(id);
+    	MotorCarDto motorCarResponse = modelMapper.map(motorCar, MotorCarDto.class);
+    	if(motorCar.getNumeroIdentificacion() != id) {
+    		return new ResponseEntity<MotorCarDto>(motorCarResponse, HttpStatus.NOT_FOUND);
+    	} else {     		
+    		return ResponseEntity.ok().body(motorCarResponse);
+    	}
+>>>>>>> Stashed changes
     }    
         
     @PostMapping("/motor-cars")
@@ -53,17 +64,39 @@ public class CocheMotorController {
     
     @PutMapping("/motor-cars/{id}")
     private ResponseEntity<MotorCarDto> updateCocheMotor(@Valid @PathVariable("id") Long id, @RequestBody MotorCarDto motorCarDto) throws Exception {
+<<<<<<< Updated upstream
     	CocheMotor motorCarRequest = modelMapper.map(motorCarDto, CocheMotor.class);
     	CocheMotor motorCar = cocheMotorService.updateCocheMotor(id, motorCarRequest);
     	MotorCarDto motorCarResponse = modelMapper.map(motorCar, MotorCarDto.class);
     	return ResponseEntity.ok().body(motorCarResponse);
+=======
+    	CocheMotor motorCar = cocheMotorService.getCocheMotorById(id);
+    	if(motorCar.getNumeroIdentificacion() != id) {
+    		return new ResponseEntity<MotorCarDto>(modelMapper.map(motorCar, MotorCarDto.class), HttpStatus.NOT_FOUND);
+    	} else {    	
+	    	CocheMotor motorCarRequest = modelMapper.map(motorCarDto, CocheMotor.class);
+	    	CocheMotor motorCarUpdated = cocheMotorService.updateCocheMotor(id, motorCarRequest);
+	    	MotorCarDto motorCarResponse = modelMapper.map(motorCarUpdated, MotorCarDto.class);
+	    	return ResponseEntity.ok().body(motorCarResponse);
+    	}
+>>>>>>> Stashed changes
     }
 	
     @DeleteMapping("/motor-cars/{id}")
     private ResponseEntity<String> deleteCocheMotor(@PathVariable("id")Long id) throws Exception {
+<<<<<<< Updated upstream
     	cocheMotorService.deleteCocheMotor(id);
     	String stringResponse = "Motor car deleted successfully";
     	return ResponseEntity.ok(stringResponse); 
+=======
+    	CocheMotor coche = cocheMotorService.getCocheMotorById(id);
+    	if(coche.getNumeroIdentificacion() != id) {
+    		return new ResponseEntity<String>("Motor car not found.", HttpStatus.NOT_FOUND);
+    	} else {
+	    	cocheMotorService.deleteCocheMotor(id);
+	    	return new ResponseEntity<String>("Motor car deleted successfully", HttpStatus.OK);
+    	}
+>>>>>>> Stashed changes
     }
 	
 

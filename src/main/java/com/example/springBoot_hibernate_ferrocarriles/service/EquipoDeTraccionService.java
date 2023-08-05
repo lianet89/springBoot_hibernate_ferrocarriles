@@ -39,8 +39,8 @@ public class EquipoDeTraccionService {
 	}
 	
 	public EquipoDeTraccion getEquipoDeTraccionById(Long id) throws Exception {
-		log.info("Obtainig a traction equipment by ID:{}", id);		
-		return equipoDeTraccionRepository.findById(id).get();				
+		log.info("Obtainig a traction equipment by ID:{}", id);	
+		return equipoDeTraccionRepository.findById(id).get();
 	}
 	
 	public EquipoDeTraccion addEquipoDeTraccion(EquipoDeTraccion equipoDeTraccion) throws Exception {
